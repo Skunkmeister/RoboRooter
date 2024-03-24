@@ -27,4 +27,4 @@ sudo python3.8 -m ipykernel install --name py3.8 --display-name "Python 3.8"
 ### Install Dependencies:
 (If on the VM, may want to change to Bridged Adapter for network so it will download faster)
 
-sudo pip3.8 install ultralytics
+sudo pip3.8 install --ignore-installed ultralytics

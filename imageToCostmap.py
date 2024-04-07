@@ -1,5 +1,4 @@
 import numpy as np
-from PIL import Image
 def detectObjects(img2D, model, decreaseByProbability):
     results = model.predict(source=img2D, conf=0.01, show_labels=False, save = True)
     costmap = np.ones((img2D.shape[0], img2D.shape[1]))

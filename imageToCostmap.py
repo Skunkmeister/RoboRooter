@@ -4,7 +4,7 @@ def detectObjects(img2D, model, decreaseByProbability):
     costmap = np.ones((img2D.shape[0], img2D.shape[1]))
     
     numberOfBoxes = results[0].boxes.shape[0]
-    boxes = results[0].boxes.numpy()
+    boxes = results[0].cpu().boxes.numpy()
     probabilities = boxes.conf
     
     for box in range(numberOfBoxes):
@@ -14,7 +14,7 @@ def detectObjects(img2D, model, decreaseByProbability):
         y1 = currBox[1].astype(int)
         y2 = currBox[3].astype(int)
         
-        mask = results[0].masks.data.numpy()[box]
+        mask = results[0].cpu().masks.data.numpy()[box]
 
         if decreaseByProbability:
             decreaseAmount = probabilities[box]

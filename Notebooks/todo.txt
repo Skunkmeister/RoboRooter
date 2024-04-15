@@ -32,3 +32,8 @@ for each incoming video frame F:
 Every for x,y replaced with vectorized numpy operations where possible.
 
 
+#Improve simulation as much as possible before presentation
+- import google maps model
+- use COLMAP structure from motion, demonstrate use in fine tuning kalman filter with ground truth from motion capture
+- use best_of(colmap, google) to render depth images on camera track (from colmap), demonstrate pointcloud + detection code on these
+

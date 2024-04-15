@@ -1,0 +1,34 @@
+#complete image stitching:
+
+load frame
+map = frame
+
+for each incoming video frame F:
+    position it at 0
+    offset map coordinates by inverse of bot motion (bot goes forward? map goes backwards. robot turns right? map turns left)
+    now align map to new frame (SIFT to shift, no homography / reprojection since pointcloud *should* do this) (this wont be exactly where the robot is, but by stitching this and computing the offset from the predicted map coords, is like a shitty form of 2D localization)
+    map = frame+map
+    we know robot is somewhere in center of map, so now crop map in square around map
+
+    sample map in front of robot (should be small square in center of map, implying robot is right of center facing left or something (depends on alignment))
+    send to yolo
+    yolo output gives costmap obstacle values
+    robot is already localized by ROS within ROS costmap, should be able to take YOLO output pic and go "apply to costmap pixels in front of robot"
+
+
+#complete image stitching simulation:
+
+for each incoming video frame F:
+    position it at 0
+    now align map to new frame (SIFT to shift, no homography / reprojection since pointcloud *should* do this)
+    map = frame + map
+
+    crop map in large square
+    repeat
+
+
+
+#accelerate sagan's code
+Every for x,y replaced with vectorized numpy operations where possible.
+
+

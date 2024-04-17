@@ -5,8 +5,8 @@ import cupy as np
 import time
 from ultralytics import YOLO
 
-def detectObjects(img2D, model, decreaseByProbability, confRequirement):
-    results = model.predict(source=img2D.get(), conf=confRequirement, show_labels=False, save=False, device='cuda:0')
+def detectObjects(img2D, model, decreaseByProbability, confRequirement, printInfo):
+    results = model.predict(source=img2D.get(), conf=confRequirement, show_labels=False, save=False, device='cuda:0', verbose=printInfo)
     costmap = np.ones((img2D.shape[0], img2D.shape[1]))
     
     numberOfBoxes = results[0].boxes.shape[0]
@@ -167,11 +167,15 @@ def main():
     model = YOLO('yolov8x-seg.pt')
     decreaseByProbability = True
     confRequirement = 0.01
+    printInfo = False
 
     # [y][x][b, g, r, weight]
     environmentMap = np.zeros((mapYSize, mapXSize, 3))
     # drivability map equal to environment map
     costMap = np.ones((mapYSize, mapXSize))
+    
+    loopNum = 0
+    average = 0
 
     running = True
     while(running):
@@ -203,7 +207,7 @@ def main():
         imageChunk = getImageChunk(environmentMap, costChunkXSize, costChunkYSize, chunkXOffset, chunkYOffset, position)
 
         # Get costmap of chunk
-        costChunk = detectObjects(imageChunk, model, decreaseByProbability, confRequirement)
+        costChunk = detectObjects(imageChunk, model, decreaseByProbability, confRequirement, printInfo)
 
         # Update the costmap
         updateCostMap(costMap, costChunkXSize, costChunkYSize, costChunk, chunkXOffset, chunkYOffset, position)
@@ -214,7 +218,13 @@ def main():
 
         time2 = time.time()
         
-        print('Loop Finished in ' + str((time2 - time1)*1000)[0:5] + ' ms...')
+        if printInfo:
+            loopNum += 1
+            newTime = (time2 - time1)*1000
+            average = (average*(loopNum-1) + newTime) / loopNum
+            
+            print('Loop ' + str(loopNum) + ': ' + str(newTime)[0:5] + ' ms')
+            print('Average: ' + str(average)[0:5] + ' ms')
         
 if __name__ == "__main__":
     main()

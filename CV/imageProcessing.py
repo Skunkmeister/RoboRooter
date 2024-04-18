@@ -189,9 +189,9 @@ def main():
         position = [posMat[0], posMat[1]]
 
         # TODO GET DEPTH/COLOR SENSOR DATA, this is hard coded to example file right now
-        depthImage = "../Depth.exr"
+        depthImage = "ExampleImages/Depth.exr"
         depthImageArray = np.array(cv2.imread(depthImage, cv2.IMREAD_ANYCOLOR | cv2.IMREAD_ANYDEPTH))
-        colorImage = "../Color.png"
+        colorImage = "ExampleImages/Color.png"
         colorImageArray = np.array(cv2.imread(colorImage))
         
     

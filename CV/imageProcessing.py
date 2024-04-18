@@ -60,6 +60,8 @@ def depthToWorld(focalLength, cameraXYZ, cameraEuler, depthImage, colorImage):
     invIntrinsicMatrix = np.linalg.inv(intrinsicMatrix)
 
     depthImage = -1 * depthImage
+    if len(depthImage.shape) < 3 or depthImage.shape[2] == 1:
+        depthImage = np.dstack((depthImage, depthImage, depthImage))
     depthImage = depthImage.reshape(-1, 3)
 
     x, y = np.mgrid[range(imgHeight), range(imgWidth)]
@@ -112,7 +114,8 @@ def flatten(xSize, ySize, scale, points, mapPoints):
     mask = img[:, :, 0] + img[:, :, 1] + img[:, :, 2]
     mask = np.dstack((mask, mask, mask))
     average = (img[:, :] + np.where(mapPoints[yMin:yMax, xMin:xMax] != 0, mapPoints[yMin:yMax, xMin:xMax], img[:, :])) / 2
-    mapPoints[yMin:yMax, xMin:xMax] = np.where(mask != 0, average, mapPoints[yMin:yMax, xMin:xMax])
+    # Average led to artifacting when not exactly aligned, using overlay instead
+    mapPoints[yMin:yMax, xMin:xMax] = np.where(mask != 0, img, mapPoints[yMin:yMax, xMin:xMax])
     mapPoints = np.flip(mapPoints, 0)
 
 

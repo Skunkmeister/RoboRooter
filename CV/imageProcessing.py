@@ -1,5 +1,6 @@
 import os
 os.environ["OPENCV_IO_ENABLE_OPENEXR"] = "1"
+import torch
 import cv2
 import cupy as np
 import time
@@ -9,8 +10,6 @@ class ImageProcessor:
     def __init__(self):
         self.model = YOLO('yolov8x-seg.pt')# Settings:
         # Environment Map
-        self.mapXSize = 6000
-        self.mapYSize = 8000
         self.mapScale = 80
         # Generate point cloud
         self.focalLength = 50.0*1920/36.0
@@ -172,14 +171,14 @@ class ImageProcessor:
             
         costMap[yMin:yMax, xMin:xMax] = costChunk
 
-    def process_imgs(self, depthImageArray, colorImageArray, printInfo=True):
+    def process_imgs(self, depthImageArray, colorImageArray, mapYSize, mapXSize, costMap, printInfo=True):
         # [y][x][b, g, r, weight]
-        environmentMap = np.zeros((self.mapYSize, self.mapXSize, 3))
+        environmentMap = np.zeros((mapYSize, mapXSize, 3))
         # drivability map equal to environment map
-        costMap = np.ones((self.mapYSize, self.mapXSize))
-        
-        loopNum = 0
-        average = 0
+        # print(f"RGB Image: {colorImageArray}")
+        print(f"Depth Image: {depthImageArray}")
+        # print(f"Map Dimensions: {mapYSize} , {mapXSize}")
+        # print(f"{costMap}")
 
         time1 = time.time()
         
@@ -187,14 +186,14 @@ class ImageProcessor:
         cameraXYZ = -1 * np.array([5, 5, -2.5])
         cameraXYZ[1] = -1 * cameraXYZ[1]
         cameraEuler = [np.pi/4, 1.22173, 0] # Camera orientation as Euler angles (in radians)
-        posMat = np.array([self.mapXSize / 2, self.mapYSize / 2, 0])
+        posMat = np.array([mapXSize / 2, mapYSize / 2, 0])
         position = [posMat[0], posMat[1]]
     
         # Generate point cloud (may not be needed if depth camera gives automatically, even if so we should include the code but disable it)
         points = self.depthToWorld(self.focalLength, cameraXYZ, cameraEuler, depthImageArray, colorImageArray)
 
         # Flattens point cloud into environmentMap
-        self.flatten(self.mapXSize, self.mapYSize, self.mapScale, points, environmentMap)
+        self.flatten(mapXSize, mapYSize, self.mapScale, points, environmentMap)
 
         # TODO CALL IMAGE STITCHING HERE (will require refactoring of flatten, since needs to be done in the middle of flatten)
 
@@ -211,7 +210,6 @@ class ImageProcessor:
         time2 = time.time()
         
         if printInfo:
-            loopNum += 1
             newTime = (time2 - time1)*1000
             print('Time'+ ': ' + str(newTime)[0:5] + ' ms')
             

@@ -4,3 +4,10 @@ __pycache__/
 /Data/
 *.zip
 *.blend?
+/colmap/
+/colmap - Copy/
+/colmaptwo/
+/Meshlab/
+/Blender Output 1/
+/Blender Output Groundlevel/
+/colmap sparse export/

@@ -12,7 +12,7 @@ class ImageProcessor:
         # Environment Map
         self.mapScale = 80
         # Generate point cloud
-        self.focalLength = 50.0*1920/36.0
+        self.focalLength = 580.25781 #From .ini files with intrinsics stuff.
         # Flatten
         self.minimumWeight = 0.25
         # Update Costmap
@@ -23,6 +23,9 @@ class ImageProcessor:
         # model = YOLO('yolov8x-seg.pt')
         self.decreaseByProbability = True
         self.confRequirement = 0.01
+        # Set below to incoming image width or height (respectively) divided by 2 in most cases.
+        self.principalPointX = 317.61728 # From .ini file intrinsic matrices
+        self.principalPointY = 245.35306 # From .ini file intrinsic matrices
 
     def detectObjects(self, img2D, model, decreaseByProbability, confRequirement, printInfo):
         results = model.predict(source=img2D.get(), conf=confRequirement, show_labels=False, save=False, device='cuda:0', verbose=printInfo)
@@ -69,8 +72,8 @@ class ImageProcessor:
         invRt = np.linalg.inv(rotationMatrix)
         
         # Calculate intrinsic matrix based on focal length and image dimensions
-        cx = (imgWidth - 1) / 2  # Assuming the principal point is at the center
-        cy = (imgHeight - 1) / 2 # Assuming the principal point is at the center
+        cx = principalPointX
+        cy = principalPointY 
         intrinsicMatrix = np.array([[focalLength, 0, cx],
                         [0, focalLength, cy],
                         [0, 0, 1]])

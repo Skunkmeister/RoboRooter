@@ -21,6 +21,10 @@ class Connection extends Component {
         const rosbridgeServerUrl = `ws://${Config.ROSBRIDGE_SERVER_IP}:${Config.ROSBRIDGE_SERVER_PORT}`;
         this.state.ros.connect(rosbridgeServerUrl);
 
+        this.state.ros.on("error", (error) => {
+        console.error("WebSocket error:", error);
+        });
+
         this.subscribeToTopic('/camera/rgb/image_raw', 'sensor_msgs/Image', 'imageData');
         this.subscribeToTopic('/camera/depth/image_raw', 'sensor_msgs/Image', 'depthData');
         this.subscribeToTopic('move_base/local_costmap/costmap', 'nav_msgs/OccupancyGrid', 'costmapData');

@@ -173,18 +173,13 @@ class ImageProcessor:
             
         costMap[yMin:yMax, xMin:xMax] = costChunk
 
-    def process_imgs(self, depthImageArray, colorImageArray, mapYSize, mapXSize, costMap, printInfo=True):
+    def process_imgs(self, handler, depthImageArray, colorImageArray, mapYSize, mapXSize, costMap, translation, rotation, printInfo=True):
         # [y][x][b, g, r, weight]
         environmentMap = np.zeros((mapYSize, mapXSize, 3))
         # drivability map equal to environment map
-        # print(f"RGB Image: {colorImageArray}")
-        print(f"Depth Image: {depthImageArray}")
-        # print(f"Map Dimensions: {mapYSize} , {mapXSize}")
-        # print(f"{costMap}")
-
         time1 = time.time()
         
-        # TODO GET EKR DATA FOR POSITION AND ORIENTATION HERE, this is hardcoded to example 1 right now
+        # TODO translation and rotation args are formatted as [x, y, z] and [x, y, z, w] respectively
         cameraXYZ = -1 * np.array([5, 5, -2.5])
         cameraXYZ[1] = -1 * cameraXYZ[1]
         cameraEuler = [np.pi/4, 1.22173, 0] # Camera orientation as Euler angles (in radians)
@@ -208,7 +203,10 @@ class ImageProcessor:
         # Update the costmap
         self.updateCostMap(costMap, self.costChunkXSize, self.costChunkYSize, costChunk, self.chunkXOffset, self.chunkYOffset, position)
         
-
+        # TODO Publish costmap here NEED TO PUT IN REAL VALUES HERE RN JUST DUMMY VALUES
+        costmap = handler.create_occgrid_msg(costMap, 0.05000000074505806, -1.4500000000000002, -1.4500000000000002, 1.22173)
+        handler.publish_costmap(costmap)
+        
         time2 = time.time()
         
         if printInfo:

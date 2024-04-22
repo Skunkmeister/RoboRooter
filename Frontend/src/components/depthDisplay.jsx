@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const DepthDisplay = ({ depthData }) => {
+    const [imageSrc, setImageSrc] = useState(null);
+
     // Function to create a data URL from the raw depth data
     const createDataUrl = (depthData) => {
         const { width, height, encoding, is_bigendian, step, data } = depthData;
@@ -13,6 +15,9 @@ const DepthDisplay = ({ depthData }) => {
                 break;
             case 'rgba8':
                 mimeType = 'image/png';
+                break;
+            case '16uc1':
+                mimeType = 'image/png'; // or 'image/jpeg' depending on your data format
                 break;
             default:
                 console.error('Unsupported depth data encoding:', encoding);
@@ -29,12 +34,24 @@ const DepthDisplay = ({ depthData }) => {
         return URL.createObjectURL(blob);
     };
 
+    useEffect(() => {
+        // Update the image source every 100 milliseconds (adjust as needed)
+        const interval = setInterval(() => {
+            if (depthData) {
+                setImageSrc(createDataUrl(depthData));
+            }
+        }, 100);
+
+        // Clean up the interval on component unmount
+        return () => clearInterval(interval);
+    }, [depthData]);
+
     return (
         <div>
             <div>
                 <h3>Depth Camera</h3>
-                {depthData ? (
-                    <img src={createDataUrl(depthData)} alt="Depth Image" />
+                {imageSrc ? (
+                    <img src={imageSrc} alt="Depth Image" width="400" height="600" />
                 ) : (
                     <p>No Depth data available</p>
                 )}

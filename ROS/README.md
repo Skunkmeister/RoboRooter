@@ -1,6 +1,10 @@
 # ROS Commands for Bot
 
-### Note: Ideally best way to work is connecting to bot remotely (ex. RealVNC) 
+## Laser Avoidance
+- roslaunch transbot_laser laser_Avoidance.launch
+- rosrun rqt_reconfigure rqt_reconfigure
+
+### Note: Ideally best way to work is connecting to bot remotely (ex. RealVNC)
 ### You can connect the bot to your own wifi/lan but some nodes may not work (namely rosbridge server) because ROS expects communication to be on 192.168.1.11 IP
 
 ## Creating a Map (Do before using RVIS or anything using costmaps):

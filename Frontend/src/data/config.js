@@ -1,6 +1,6 @@
 //Most of these need to be changed
 const Config = {
-  ROSBRIDGE_SERVER_IP: "127.0.0.1",
+  ROSBRIDGE_SERVER_IP: "192.168.1.11",
   ROSBRIDGE_SERVER_PORT: "9090",
 };
 

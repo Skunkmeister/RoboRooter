@@ -1,16 +1,16 @@
 import React from 'react';
+import placeholderImg from './assets/img/placeholder.png'
 
 const DepthDisplay = ({ depthData }) => {
-
 
     return (
         <div>
             <div>
                 <h3>Depth Camera</h3>
-                {imageSrc ? (
+                {depthData ? (
                     <img src={"data:image/jpg;base64," + depthData.data} alt="Depth Image"  />
                 ) : (
-                    <p>No Depth data available</p>
+                   <img src={placeholderImg} alt="No data" />
                 )}
             </div>
         </div>

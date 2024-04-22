@@ -11,31 +11,28 @@ const CostmapDisplay = ({ costmapData }) => {
 
     useEffect(() => {
         if (costmapData && costmapData.data) {
-
-      const newNormalizedCostmap = normalizeCostmap(costmapData.data);
-
-      setNormalizedCostmap(newNormalizedCostmap);
-    }
+            const newNormalizedCostmap = normalizeCostmap(costmapData.data);
+            setNormalizedCostmap(newNormalizedCostmap);
+        }
     }, [costmapData]);
 
     const costmapToImageDataUrl = (costmap) => {
         const imageData = new Uint8Array(costmap);
-        const blob = new Blob([imageData], { type: 'image/ppng' });
+        const blob = new Blob([imageData], { type: 'image/png' });
         return URL.createObjectURL(blob);
     };
 
-    const imageDataUrl = costmapToImageDataUrl(normalizeCostmap);
-
+    const imageDataUrl = costmapToImageDataUrl(normalizedCostmap);
 
     return (
         <div>
-      <h3>Costmap Display</h3>
-      {costmapData && costmapData.data ? (
-        <img src={imageDataUrl} alt="Costmap" />
-      ) : (
-        <p>No costmap data available</p>
-      )}
-    </div>
+            <h3>Costmap Display</h3>
+            {costmapData && costmapData.data ? (
+                <img src={imageDataUrl} alt="Costmap" />
+            ) : (
+                <p>No costmap data available</p>
+            )}
+        </div>
     );
 }
 

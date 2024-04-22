@@ -5,7 +5,8 @@ const DepthDisplay = ({ depthData }) => {
 
     // Function to create a data URL from the raw depth data
     const createDataUrl = (depthData) => {
-        const { width, height, encoding, is_bigendian, step, data } = depthData;
+       const { width, height, encoding, is_bigendian, step, data } = depthData;
+       const decodedData = atob(data);
 
         // Determine the MIME type based on the depth data encoding
         let mimeType;
@@ -28,23 +29,23 @@ const DepthDisplay = ({ depthData }) => {
         const uint8Array = new Uint8Array(data);
 
         // Construct a Blob from the Uint8Array
-        const blob = new Blob([uint8Array], { type: mimeType });
+        const blob = new Blob([decodedData], { type: mimeType });
 
         // Construct a data URL from the Blob
         return URL.createObjectURL(blob);
     };
 
-    useEffect(() => {
-        // Update the image source every 100 milliseconds (adjust as needed)
-        const interval = setInterval(() => {
-            if (depthData) {
-                setImageSrc(createDataUrl(depthData));
-            }
-        }, 100);
+    // useEffect(() => {
+    //     // Update the image source every 100 milliseconds (adjust as needed)
+    //     const interval = setInterval(() => {
+    //         if (depthData) {
+    //             setImageSrc(createDataUrl(depthData));
+    //         }
+    //     }, 100);
 
-        // Clean up the interval on component unmount
-        return () => clearInterval(interval);
-    }, [depthData]);
+    //     // Clean up the interval on component unmount
+    //     return () => clearInterval(interval);
+    // }, [depthData]);
 
     return (
         <div>

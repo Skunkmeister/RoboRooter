@@ -8,7 +8,7 @@ const ImageDisplay = ({ imageData }) => {
             <div>
                 <h3>RGB Camera</h3>
                 {imageData ? (
-                    <img src={"data:image/jpg;base64," + imageData.data} alt="ROS Image" id="rgb_display" />
+                    <img src={"data:image/jpg;base64," + imageData.data} alt="ROS Image"  />
                 ) : (
                     <p>No Image data available</p>
                 )}

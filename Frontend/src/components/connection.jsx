@@ -25,9 +25,9 @@ class Connection extends Component {
         console.error("WebSocket error:", error);
         });
 
-        this.subscribeToTopic('/camera/rgb/image_raw', 'sensor_msgs/Image', 'imageData');
-        this.subscribeToTopic('/camera/depth/image_raw', 'sensor_msgs/Image', 'depthData');
-        this.subscribeToTopic('move_base/local_costmap/costmap', 'nav_msgs/OccupancyGrid', 'costmapData');
+        this.subscribeToTopic('/camera/rgb/image_raw/compressed', 'sensor_msgs/CompressedImage', 'imageData');
+        this.subscribeToTopic('/camera/depth_registered/image/compressed', 'sensor_msgs/CompressedImage', 'depthData');
+        this.subscribeToTopic('move_base/local_costmap/pre_costmap', 'nav_msgs/OccupancyGrid', 'costmapData');
 
         // Event listeners for ROS connection status
         this.state.ros.on("connection", () => {

@@ -1,3 +1,4 @@
+import torch
 import os
 os.environ["OPENCV_IO_ENABLE_OPENEXR"] = "1"
 import cv2
@@ -25,6 +26,10 @@ class ImageProcessor:
         # Set below to incoming image width or height (respectively) divided by 2 in most cases.
         self.principalPointX = 317.61728 # From .ini file intrinsic matrices
         self.principalPointY = 245.35306 # From .ini file intrinsic matrices
+        self.xSize = 4000
+        self.ySize = 4000
+        self.environmentMap = np.zeros((self.ySize, self.xSize, 3))
+        self.costMap = np.ones((self.ySize, self.xSize))
 
     def detectObjects(self, img2D, model, decreaseByProbability, confRequirement, printInfo):
         results = model.predict(source=img2D.get(), conf=confRequirement, show_labels=False, save=False, device='cuda:0', verbose=printInfo)
@@ -71,8 +76,8 @@ class ImageProcessor:
         invRt = np.linalg.inv(rotationMatrix)
         
         # Calculate intrinsic matrix based on focal length and image dimensions
-        cx = principalPointX
-        cy = principalPointY 
+        cx = self.principalPointX
+        cy = self.principalPointY 
         intrinsicMatrix = np.array([[focalLength, 0, cx],
                         [0, focalLength, cy],
                         [0, 0, 1]])
@@ -173,39 +178,35 @@ class ImageProcessor:
             
         costMap[yMin:yMax, xMin:xMax] = costChunk
 
-    def process_imgs(self, handler, depthImageArray, colorImageArray, mapYSize, mapXSize, costMap, translation, rotation, printInfo=True):
-        # [y][x][b, g, r, weight]
-        environmentMap = np.zeros((mapYSize, mapXSize, 3))
+    def process_imgs(self, handler, depthImageArray, colorImageArray, translation, rotation, printInfo=True):
         # drivability map equal to environment map
         time1 = time.time()
         
         # TODO translation and rotation args are formatted as [x, y, z] and [x, y, z, w] respectively
-        cameraXYZ = -1 * np.array([5, 5, -2.5])
-        cameraXYZ[1] = -1 * cameraXYZ[1]
-        cameraEuler = [np.pi/4, 1.22173, 0] # Camera orientation as Euler angles (in radians)
-        posMat = np.array([mapXSize / 2, mapYSize / 2, 0])
-        position = [posMat[0], posMat[1]]
+        cameraXYZ = translation
+        cameraEuler = rotation # Camera orientation as Euler angles (in radians)
+        position = [cameraXYZ[0], cameraXYZ[1]]
     
         # Generate point cloud (may not be needed if depth camera gives automatically, even if so we should include the code but disable it)
         points = self.depthToWorld(self.focalLength, cameraXYZ, cameraEuler, depthImageArray, colorImageArray)
 
         # Flattens point cloud into environmentMap
-        self.flatten(mapXSize, mapYSize, self.mapScale, points, environmentMap)
+        self.flatten(self.mapXSize, self.mapYSize, self.mapScale, points, self.environmentMap)
 
         # TODO CALL IMAGE STITCHING HERE (will require refactoring of flatten, since needs to be done in the middle of flatten)
 
         # Get chunk of image for ML Model, right now is implemented as rectangle around rover position offset by x and y
-        imageChunk = self.getImageChunk(environmentMap, self.costChunkXSize, self.costChunkYSize, self.chunkXOffset, self.chunkYOffset, position)
+        imageChunk = self.getImageChunk(self.environmentMap, self.costChunkXSize, self.costChunkYSize, self.chunkXOffset, self.chunkYOffset, position)
 
         # Get costmap of chunk
         costChunk = self.detectObjects(imageChunk, self.model, self.decreaseByProbability, self.confRequirement, printInfo)
 
         # Update the costmap
-        self.updateCostMap(costMap, self.costChunkXSize, self.costChunkYSize, costChunk, self.chunkXOffset, self.chunkYOffset, position)
+        self.updateCostMap(self.costMap, self.costChunkXSize, self.costChunkYSize, costChunk, self.chunkXOffset, self.chunkYOffset, position)
         
         # TODO Publish costmap here NEED TO PUT IN REAL VALUES HERE RN JUST DUMMY VALUES
-        costmap = handler.create_occgrid_msg(costMap, 0.05000000074505806, -1.4500000000000002, -1.4500000000000002, 1.22173)
-        handler.publish_costmap(costmap)
+        costmap = handler.create_occgrid_msg(self.costMap, 0.05000000074505806, -1.4500000000000002, -1.4500000000000002, 1.22173)
+        handler.publish_costmap(self.costmap)
         
         time2 = time.time()
         

@@ -1,15 +1,14 @@
+import torch
 import cv2
 import base64
 import roslibpy
 import cupy as cp
-import numpy as np
 from CV.imageProcessing import ImageProcessor
 
 def process_topics(hndlr)->None:
         while(hndlr.client.is_connected):
             if all(x is not None for x in [hndlr.depth_img, hndlr.rgb_img, hndlr.costmap, hndlr.translation, hndlr.rotation]):
-                hndlr.ip.process_imgs(hndlr, hndlr.depth_img, hndlr.rgb_img,hndlr.mapheight, 
-                                     hndlr.mapwidth, hndlr.costmap, hndlr.translation, hndlr.rotation)
+                hndlr.ip.process_imgs(hndlr, hndlr.depth_img, hndlr.rgb_img, hndlr.translation, hndlr.rotation)
 
 class RosHandler:
     def __init__(self):

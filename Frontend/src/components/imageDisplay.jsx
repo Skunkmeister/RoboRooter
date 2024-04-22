@@ -1,4 +1,5 @@
 import React from 'react';
+import placeholderImg from './assets/img/placeholder.png'
 
 const ImageDisplay = ({ imageData }) => {
     // Function to create a data URL from the raw image data
@@ -10,7 +11,7 @@ const ImageDisplay = ({ imageData }) => {
                 {imageData ? (
                     <img src={"data:image/jpg;base64," + imageData.data} alt="ROS Image"  />
                 ) : (
-                    <p>No Image data available</p>
+                    <img src={placeholderImg} alt="No data" />
                 )}
             </div>
         </div>

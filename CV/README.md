@@ -1,5 +1,7 @@
 # RoboRouter
-(This is an in progress READ ME)
+
+The CV side of this project contains our image reprojection, stitching, and costmap generation. See the ImageProcessing Notebook for the example of how this project works, and the SImulationAnalysis Notebook for our simulation displaying the capabilities of the CV.
+
 Using Transbot Yahboom OS (https://drive.google.com/drive/folders/1AYY0aqfEIAUVye5KiGW9kl8dchKNQvg9):
 
 ### Install Jupyter Notebook:

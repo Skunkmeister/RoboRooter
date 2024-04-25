@@ -5,6 +5,7 @@ __pycache__/
 /Data/
 *.zip
 *.blend?
+*.blend
 /colmap/
 /colmap - Copy/
 /colmaptwo/

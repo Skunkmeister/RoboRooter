@@ -1,7 +1,7 @@
 # RoboRouter: Towards Robust Navigation via Texture-aware Pathfinding
 
 ![](https://github.com/RoboRooter/Gifs/mapVideo-ezgif.com-video-to-gif-converter.gif)
-![](https://github.com/RoboRooter/Gifs/video-ezgif.com-video-to-gif-converter.gif)
+![](https://github.com/Skunkmeister/RoboRooter/blob/main/Gifs/mapVideo-ezgif.com-video-to-gif-converter.gif?raw=true)
 ![](https://github.com/RoboRooter/Gifs/g2.gif)
 
 ## Overview

@@ -1,4 +1,5 @@
 runs/
+*.png
 __pycache__/
 *.pt
 /Data/

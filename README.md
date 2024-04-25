@@ -18,7 +18,7 @@ RoboRouter is a senior project undertaken to navigate challenging terrains by em
 - **ROS (Robot Operating System)**: Used for managing robot behavior through a modular framework.
 - **Python**: Primary language for both ROS, simulation, and the Blender API.
 - **React**: Frontend framework.
-- **NVIDIA Jetson Nano**: Provides the computational power necessary for processing visual data and running AI models.
+- **NVIDIA Jetson**: Provides the computational power necessary for processing visual data and running AI models.
 
 ## Acknowledgments
 - Dr. Alexandre Gomes de Siqueira, for his continuous support and guidance.

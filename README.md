@@ -1,7 +1,10 @@
 # RoboRouter: Towards Robust Navigation via Texture-aware Pathfinding
-<img src="https://github.com/Skunkmeister/RoboRooter/blob/main/Gifs/video-ezgif.com-video-to-gif-converter.gif?raw=true" width="300" height="300">
-<img src="https://github.com/Skunkmeister/RoboRooter/blob/main/Gifs/mapVideo-ezgif.com-video-to-gif-converter.gif?raw=true" width="300" height="300">
-<img src="https://github.com/Skunkmeister/RoboRooter/blob/main/Gifs/yoloPathfound.gif?raw=true" width="300" height="300">
+<div>
+  <img src="https://github.com/Skunkmeister/RoboRooter/blob/main/Gifs/video-ezgif.com-video-to-gif-converter.gif?raw=true" width="300" height="300">
+  <img src="https://github.com/Skunkmeister/RoboRooter/blob/main/Gifs/mapVideo-ezgif.com-video-to-gif-converter.gif?raw=true" width="300" height="300">
+  <img src="https://github.com/Skunkmeister/RoboRooter/blob/main/Gifs/yoloPathfound.gif?raw=true" width="300" height="300">
+</div>
+
 
 ## Overview
 RoboRouter is a senior project undertaken to navigate challenging terrains by emphasizing the role of terrain color texture over surface geometry in making pathfinding decisions, developed as part of the CIS4914 under the supervision of Dr. Alexandre Gomes de Siqueira.

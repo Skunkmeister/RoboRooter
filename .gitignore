@@ -1,0 +1,16 @@
+runs/
+*.png
+__pycache__/
+*.pt
+/Data/
+*.zip
+*.blend?
+
+/colmap/
+/colmap - Copy/
+/colmaptwo/
+/Meshlab/
+/Blender Output TruePositions/
+/Blender Output Groundlevel/
+/colmap sparse export/
+Notebooks/Render.blend

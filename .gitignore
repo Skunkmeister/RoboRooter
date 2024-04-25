@@ -5,7 +5,7 @@ __pycache__/
 /Data/
 *.zip
 *.blend?
-*.blend
+
 /colmap/
 /colmap - Copy/
 /colmaptwo/
@@ -13,3 +13,4 @@ __pycache__/
 /Blender Output TruePositions/
 /Blender Output Groundlevel/
 /colmap sparse export/
+Notebooks/Render.blend

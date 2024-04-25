@@ -2,7 +2,7 @@
 
 ![](https://github.com/RoboRooter/Gifs/mapVideo-ezgif.com-video-to-gif-converter.gif)
 ![](https://github.com/RoboRooter/Gifs/video-ezgif.com-video-to-gif-converter.gif)
-![](https://github.com/RoboRooter/Gifs/yoloPathfound-ezgif.com-video-to-gif-converter (1).gif)
+![](https://github.com/RoboRooter/Gifs/g2.gif)
 
 ## Overview
 RoboRouter is a senior project undertaken to navigate challenging terrains by emphasizing the role of terrain color texture over surface geometry in making pathfinding decisions, developed as part of the CIS4914 under the supervision of Dr. Alexandre Gomes de Siqueira.
